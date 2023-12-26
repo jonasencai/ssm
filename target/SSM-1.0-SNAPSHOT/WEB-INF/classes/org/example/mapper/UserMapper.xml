@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.UserMapper">
+    <select id="loginC" resultType="org.example.pojo.User">
+        SELECT *  FROM USER su
+        where account = #{account} and password = #{password}
+    </select>
+
+</mapper>

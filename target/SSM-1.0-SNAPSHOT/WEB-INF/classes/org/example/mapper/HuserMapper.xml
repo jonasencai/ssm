@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.HuserMapper">
+
+    <select id="findAll">
+        SELECT * FROM `user`
+            where 1= 1
+            <if test="user.username!=null and user.username!=''">
+                and username like concat('%',#{user.username},'%')
+            </if>
+            <if test="user.classname!=null and user.classname!=''">
+                and classname like concat('%',#{user.classname},'%')
+            </if>
+            <if test="user.stuid!=null and user.stuid!=''">
+                and stuid = #{user.stuid}
+            </if>
+            <if test="user.role!=null and user.role!=''">
+                and role = #{user.role}
+            </if>
+            ORDER BY user.id DESC
+            limit #{pageNo} , #{pageSize}
+    </select>
+    <select id="count">
+        SELECT count(*) FROM `user`
+            where 1 = 1
+            <if test="user.username!=null and user.username!=''">
+                and username like concat('%',#{user.username},'%')
+            </if>
+            <if test="user.classname!=null and user.classname!=''">
+                and classname like concat('%',#{user.classname},'%')
+            </if>
+            <if test="user.stuid!=null and user.stuid!=''">
+                and stuid = #{user.stuid}
+            </if>
+            <if test="user.role!=null and user.role!=''">
+                and role = #{user.role}
+            </if>
+            ORDER BY user.id DESC
+    </select>
+    <select id="selectHuserById">
+        select *
+        from `user`
+        where id = #{id}
+    </select>
+    <delete id="deleteHuserByid">
+        delete
+        from `user`
+        where id = #{id}
+    </delete>
+
+    <update id="updateHuser">
+        update `user`
+        set account   = #{user.account},
+            stuid     =#{user.stuid},
+            username  =#{user.username},
+            password  =#{user.password},
+            sex       =#{user.sex},
+            age       =#{user.age},
+            college   =#{user.college},
+            classname =#{user.classname},
+            tel       =#{user.tel},
+            birthday  =#{user.birthday},
+            role      =#{user.role}
+        where id = #{user.id}
+    </update>
+
+    <insert id="insertHuser">
+        insert into `user`(account, stuid, username, password, sex, age, college, classname, tel, birthday, role)
+        VALUES (#{user.account}, #{user.stuid}, #{user.username}, #{user.password}, #{user.sex}, #{user.age},
+                #{user.college}, #{user.classname}, #{user.tel}, #{user.birthday}, #{user.role})
+    </insert>
+    <update id="changePassword">
+        update `user` set password =#{user.password} where id = #{user.id}
+    </update>
+</mapper>

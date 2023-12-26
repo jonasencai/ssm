@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="org.example.controller"/>
+
+    <mvc:annotation-driven/>
+
+    <mvc:default-servlet-handler />
+
+    <!-- 以上两种配置方式都是对DispatcherServlet所处理的所有的请求进行拦截 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--配置被监听的请求地址规则 -->
+            <mvc:mapping path="/**"/>
+            <!--配置不被监听的规则 -->
+            <mvc:exclude-mapping path="/login"/>
+            <!--配置的监听器 -->
+            <bean class="org.example.intercerpect.Loginintercepter"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="stringConverter"
+          class="org.springframework.http.converter.StringHttpMessageConverter">
+        <property name="writeAcceptCharset" value="false" />
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="stringConverter" />
+                <ref bean="jsonConverter" />
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="maxUploadSize" value="10485760"></property>
+    </bean>
+</beans>

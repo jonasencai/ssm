@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.QuestionMapper">
+    <select id="selectAllC" resultType="org.example.pojo.Questions">
+        SELECT * FROM Questions questions
+        limit  #{pageNo} , #{pageSize}
+    </select>
+
+    <select id="selectQuestionsById" resultType="org.example.pojo.Questions">
+        select * from Questions where id = #{id}
+    </select>
+
+    <delete id="deleteQuestionsByid" >
+        delete  from Questions where id = #{id}
+    </delete>
+
+    <update id="updateQuestions">
+        update Questions set question =#{Questions.question},optA =#{Questions.optA},optB =#{Questions.optB},optC =#{Questions.optC}
+        where id = #{Questions.id}
+    </update>
+
+    <insert id="insertQuestions">
+        insert into  Questions( question, optA,optB,optC)
+        VALUES (#{Questions.question}, #{Questions.optA},#{Questions.optB}, #{Questions.optC})
+    </insert>
+
+    <select id="count">
+        SELECT count(*) FROM Questions Questions
+    </select>
+
+</mapper>

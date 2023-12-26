@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.PexaminMapper">
+    <select id="selectAllC" resultType="org.example.pojo.Pexamination">
+        SELECT * FROM Pexamination p
+        where p.stuid = #{stuid}
+        limit  #{pageNo} , #{pageSize}
+    </select>
+
+    <select id="selectPexaminationById" resultType="org.example.pojo.Pexamination">
+        select * from Pexamination where id = #{id}
+    </select>
+    <delete id="deletePexaminationByid" >
+        delete  from Pexamination where id = #{id}
+    </delete>
+
+    <update id="updatePexamination">
+        update Pexamination set date = #{p.date},pic=#{p.pic},tittle =#{p.tittle}
+        where id = #{p.id}
+    </update>
+
+    <insert id="insertPexamination">
+        insert into  Pexamination( stuid, username,date,pic,tittle)
+        VALUES (#{p.stuid}, #{p.username},#{p.date},#{p.pic}, #{p.tittle})
+    </insert>
+
+    <select id="count">
+        SELECT count(*) FROM Pexamination p
+        where p.stuid = #{stuid}
+    </select>
+
+</mapper>

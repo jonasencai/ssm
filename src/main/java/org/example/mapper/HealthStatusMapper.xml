@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.HealthStatusMapper">
+
+    <select id="selectAll">
+        SELECT hs.id,hs.stuid,i.tittle illtittle,s.tittle sporttittle,l.tittle lifetittle,p.tittle
+        pexaminationtittle,p.pic pic,qs.score questionscore,hs.suggestion suggestion,hs.healthscore,hs.date,hs.healthstatus FROM healthstatus hs
+        LEFT JOIN ill i ON i.id = hs.illid
+        LEFT JOIN sport s ON s.id = hs.sportid
+        LEFT JOIN pexamination p ON p.id = hs.pexaminationid
+        LEFT JOIN life l ON l.id = hs.lifeid
+        LEFT JOIN questionnairescore qs ON qs.id = hs.questionscoreid
+        where 1 = 1
+        <if test="hsd.stuid!=null and hsd.stuid!='' and hsd.stuid != 0">
+            and hs.stuid = #{hsd.stuid}
+        </if>
+        <if test="hsd.date!=null and hsd.date!=''">
+            and hs.date = #{hsd.date}
+        </if>
+        ORDER BY hs.date DESC
+        limit #{pageNo} , #{pageSize}
+    </select>
+    <select id="count">
+        SELECT count(*) FROM healthstatus hs
+        LEFT JOIN ill i ON i.id = hs.illid
+        LEFT JOIN sport s ON s.id = hs.sportid
+        LEFT JOIN pexamination p ON p.id = hs.pexaminationid
+        LEFT JOIN life l ON l.id = hs.lifeid
+        LEFT JOIN questionnairescore qs ON qs.id = hs.questionscoreid
+        where 1 = 1
+        <if test="hsd.stuid!=null and hsd.stuid!=''">
+            and hs.stuid = #{hsd.stuid}
+        </if>
+        <if test="hsd.date!=null and hsd.date!=''">
+            and hs.date = #{hsd.date}
+        </if>
+        ORDER BY hs.date DESC
+    </select>
+    <select id="selectHealthStatusById">
+        select *
+        from `healthstatus`
+        where id = #{id}
+    </select>
+    <delete id="deleteHealthStatus">
+        delete
+        from `healthstatus`
+        where id = #{id}
+    </delete>
+
+    <update id="updateHealthStatus">
+        update `healthstatus`
+        set stuid           =#{hsd.stuid},
+            illid           =#{hsd.illid},
+            sportid         =#{hsd.sportid},
+            pexaminationid  =#{hsd.pexaminationid},
+            lifeid          =#{hsd.lifeid},
+            questionscoreid =#{hsd.questionscoreid},
+            suggestion      =#{hsd.suggestion},
+            healthscore     =#{hsd.healthscore},
+            healthstatus    =#{hsd.healthstatus}
+            where id = #{hsd.id}
+    </update>
+
+    <insert id="insertHealthStatus">
+        insert into `healthstatus`(stuid, illid, sportid, pexaminationid, lifeid, questionscoreid, date, suggestion, healthscore)
+        VALUES (#{hsd.stuid}, #{hsd.illid}, #{hsd.sportid}, #{hsd.pexaminationid}, #{hsd.lifeid}, #{hsd.questionscoreid},
+                #{hsd.date}, #{hsd.suggestion}, #{hsd.healthscore})
+    </insert>
+
+    <select id="selectIllByStuId" resultType="org.example.pojo.Ill">
+        select * from Ill where stuid = #{id}
+    </select>
+    <select id="selectSportByStuId" resultType="org.example.pojo.Sport">
+        select * from sport where stuid = #{id}
+    </select>
+    <select id="selectLifeByStuId" resultType="org.example.pojo.Life">
+        select * from life where stuid = #{id}
+    </select>
+    <select id="selectPexaminationByStuId" resultType="org.example.pojo.Pexamination">
+        select * from Pexamination where stuid = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.IllMapper">
+    <select id="selectAllC" resultType="org.example.pojo.Ill">
+        SELECT * FROM Ill ill
+        where ill.stuid = #{stuid}
+        limit  #{pageNo} , #{pageSize}
+    </select>
+
+    <select id="selectIllById" resultType="org.example.pojo.Ill">
+        select * from Ill where id = #{id}
+    </select>
+    <delete id="deleteIllByid" >
+        delete  from Ill where id = #{id}
+    </delete>
+
+    <update id="updateIll">
+        update Ill set date = #{Ill.date},tittle =#{Ill.tittle}
+        where id = #{Ill.id}
+    </update>
+
+    <insert id="insertIll">
+        insert into  Ill( stuid, username,date,tittle)
+        VALUES (#{Ill.stuid}, #{Ill.username},#{Ill.date}, #{Ill.tittle})
+    </insert>
+
+    <select id="count">
+        SELECT count(*) FROM Ill Ill
+        where Ill.stuid = #{stuid}
+    </select>
+
+</mapper>

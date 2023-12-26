@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.QuestionnaireScoreMapper">
+    <select id="selectAllC" resultType="org.example.pojo.Questionnairescore">
+        SELECT * FROM questionnairescore qns WHERE qns.questionnaireid = #{q}
+            limit  #{pageNo} , #{pageSize}
+    </select>
+
+    <select id="selectQuestionnairesocreByQuestionId" resultType="org.example.pojo.Questionnairescore">
+        SELECT * FROM questionnairescore qns WHERE qns.questionnaireid = #{id}
+
+    </select>
+    <select id="selectQuestionnairesocreById" resultType="org.example.pojo.Questionnairescore">
+        SELECT * FROM questionnairescore qns WHERE qns.id = #{id}
+
+    </select>
+
+
+    <delete id="deleteQuestionnairesocreByid" >
+        delete  from questionnairescore where id = #{id}
+    </delete>
+
+    <update id="updateQuestionnairesocre">
+        UPDATE questionnairescore qn SET qn.questionnaireid = #{qns.questionnaireid}, qn.stuid = #{qns.stuid},qn.date = #{qns.date},qn.score = #{qns.score}
+        WHERE
+        <if test="qns.id!=null and qns.id!=''">
+            qn.id =#{qns.id}
+        </if>
+        <if test="qns.stuid!=null and qns.stuid!=''">
+            qn.stuid =#{qns.stuid}
+        </if>
+        <if test="qns.questionnaireid!=null and qns.questionnaireid!=''">
+            qn.questionnaireid =#{qns.questionnaireid}
+        </if>
+
+    </update>
+    <update id="updateSocre">
+        UPDATE questionnairescore qn SET qn.score = #{qns.score}
+        WHERE qn.stuid =#{qns.stuid} and  qn.questionnaireid =#{qns.questionnaireid}
+    </update>
+
+
+    <insert id="insertQuestionnairesocre" keyProperty="id" useGeneratedKeys="true">
+        insert into  questionnairescore ( questionnaireid,stuid,date,score)
+        VALUES (#{qns.questionnaireid}, #{qns.stuid},#{qns.date},#{qns.score})
+    </insert>
+
+    <select id="count">
+        SELECT count(*) FROM questionnairescore qns WHERE qns.questionnaireid = #{q}
+    </select>
+
+    <select id="selectQuestionnaireByStuid" >
+        SELECT q.questionnaireid
+        FROM questionnairescore q
+        WHERE q.stuid = #{stuid} and q.score = 0
+    </select>
+    <select id="selectQuestionSByStuid" >
+        SELECT * FROM questions q LEFT JOIN questionnaire qn
+         ON qn.questionNo = q.id
+        WHERE qn.id = #{id}
+    </select>
+
+
+
+
+</mapper>

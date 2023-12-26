@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.CommentMapper">
+    <select id="selectAllC" resultType="org.example.pojo.Comment">
+        SELECT * FROM Comment comment
+        where 1=1
+            <if test="comment.username!=null and comment.username!=''">
+                and  username like concat('%',#{comment.username},'%')
+            </if>
+            <if test="comment.reporter!=null and comment.reporter!=''">
+                and  reporter like concat('%',#{comment.reporter},'%')
+            </if>
+            <if test="comment.stuid!=null and comment.stuid!=''">
+                and  stuid = #{comment.stuid}
+            </if>
+        ORDER BY comment.date DESC
+        limit  #{pageNo},#{pageSize}
+    </select>
+
+    <select id="selectCommentById" resultType="org.example.pojo.Comment">
+        select * from Comment where id = #{id}
+    </select>
+    <delete id="deleteCommentById" >
+        delete from Comment where id = #{id}
+    </delete>
+
+    <update id="updateComment">
+        update Comment set stuid = #{Comment.stuid},username = #{Comment.username},tittle1 =#{Comment.tittle1},tittle2 =#{Comment.tittle2},reporter =#{Comment.reporter}
+        where id = #{Comment.id}
+    </update>
+
+    <insert id="insertComment">
+        insert into Comment( stuid, username,date,tittle1)
+        VALUES (#{Comment.stuid}, #{Comment.username},#{Comment.date}, #{Comment.tittle1})
+    </insert>
+
+    <select id="count">
+        SELECT count(*) FROM Comment comment
+        where 1=1
+        <if test="comment.username!=null and comment.username!=''">
+                and  username like concat('%',#{comment.username},'%')
+            </if>
+            <if test="comment.reporter!=null and comment.reporter!=''">
+                and  reporter like concat('%',#{comment.reporter},'%')
+            </if>
+            <if test="comment.stuid!=null and comment.stuid!=''">
+                and  stuid = #{comment.stuid}
+            </if>
+    </select>
+
+</mapper>

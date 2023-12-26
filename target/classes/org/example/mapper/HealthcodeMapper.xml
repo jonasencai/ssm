@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.HealthcodeMapper">
+    <select id="selectAll" resultType="org.example.pojo.Healthcode">
+        SELECT *
+        FROM healthcode
+        ORDER BY score DESC
+    </select>
+
+    <select id="selectHealthcodeById" resultType="org.example.pojo.Healthcode">
+        SELECT *
+        FROM Healthcode
+        where id = #{id}
+    </select>
+    <delete id="deleteHealthcodeById">
+        delete
+        from Healthcode
+        where id = #{id}
+    </delete>
+
+    <update id="updateHealthcode">
+        update Healthcode
+        set healthstatus = #{hc.healthstatus},
+            score        = #{hc.score}
+        where id = #{hc.id}
+    </update>
+
+    <insert id="insertHealthcode">
+        insert into Comment(healthstatus, score)
+        VALUES (#{hc.healthstatus}, #{hc.score})
+    </insert>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper是映射文件的根标签 namespace属性 指定mapper映射对应的mapper接口是谁 -->
+<mapper namespace="org.example.mapper.QuestionnaireMapper">
+    <select id="selectAll">
+        SELECT DISTINCT id
+        FROM questionnaire
+        ORDER BY id ASC
+    </select>
+
+    <select id="selectQListById" resultType="org.example.pojo.Questions">
+        SELECT * FROM questions q LEFT JOIN questionnaire qn ON qn.questionNo = q.id
+        WHERE qn.id = #{id}
+    </select>
+
+    <select id="selectQuestionnaireById">
+        SELECT DISTINCT qn.questionNo
+        FROM questionnaire qn
+        WHERE qn.id = #{id}
+    </select>
+    <delete id="deleteQuestionnaireByid">
+        delete
+        from questionnaire
+        where id = #{id}
+    </delete>
+
+    <update id="updateQuestionnaire">
+        UPDATE questionnaire qn
+        SET qn.questionNo = #{q.questionNo}
+        WHERE qn.questionNo = #{q.questionNo} where id = #{q.id}
+    </update>
+
+    <insert id="insertQuestionnaire">
+        insert into questionnaire (id, questionNo)
+        VALUES (#{q.id}, #{q.questionNo})
+    </insert>
+
+    <select id="count">
+        SELECT DISTINCT qn.id
+        FROM questionnaire qn
+        ORDER BY qn.id DESC
+    </select>
+
+    <select id="selectAllHuserByRole" resultType="org.example.pojo.Huser">
+        SELECT *
+        FROM USER u
+        WHERE u.role = 3
+    </select>
+</mapper>
